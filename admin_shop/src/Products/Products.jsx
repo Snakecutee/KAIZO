@@ -5,6 +5,8 @@ import Pagination from './Component/Pagination';
 import { Link } from 'react-router-dom';
 import Categories from './../Categories/Categories';
 
+
+
 function Products(props) {
 
     const [products, setProducts] = useState([]);
@@ -16,7 +18,7 @@ function Products(props) {
         search: '',
         category: 'all'
     })
-
+ console.log(products ) 
     const onChangeText = (e) => {
         const value = e.target.value
         if (!value) {
@@ -30,8 +32,6 @@ function Products(props) {
     //Tổng số trang
     const [totalPage, setTotalPage] = useState()
 
-    //Hàm này dùng để thay đổi state pagination.page
-    //Nó sẽ truyền xuống Component con và nhận dữ liệu từ Component con truyền lên
     const handlerChangePage = (value) => {
         setPagination({
             page: value,
@@ -39,15 +39,27 @@ function Products(props) {
             category: pagination.category
         })
     }
-
+    const handleDeleteProduct = async (productId) => {
+        try {
+          const response = await ProductAPI.deleteProduct(productId);
+          if (response.status === 200) {
+            setProducts(products.filter(product => product._id !== productId));
+            alert('Xóa sản phẩm thành công!');
+          } else {
+            console.error('Failed to delete product:', response.error);
+            alert('Xóa sản phẩm thất bại. Vui lòng thử lại!');
+          }
+        } catch (error) {
+          console.error('Error deleting product:', error);
+          alert('Có lỗi xảy ra khi xóa sản phẩm!');
+        }
+      };
     useEffect(() => {
         const fetchAllData = async () => {
             // Nếu mà category === 'all' thì nó sẽ gọi hàm get tất cả sản phẩm
-            // Ngược lại thì nó sẽ gọi hàm pagination và phân loại sản phẩm
             const params = {
                 page: pagination.page,
                 count: pagination.count,
-                // search: pagination.search,
                 category: pagination.category
             }
 
@@ -128,10 +140,14 @@ function Products(props) {
                                                                 {value?.description}
                                                             </div>
                                                         </td>
-                                                        <td>{value?.category}</td>
+                                                        <td>{value.category}</td>
                                                         <td>
                                                             <a href={`/products/view-edit?id=${value._id}`} style={{ cursor: 'pointer', color: 'white' }} className="btn btn-success">Update</a>
                                                         </td>
+                                                       <a href="#" onClick={() => {
+                                                                   if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                                                                   handleDeleteProduct(value._id); }
+                                                              }} style={{ cursor: 'pointer', color: 'white' }} className="btn btn-danger">Delete</a>
                                                     </tr>
                                                 ))
                                             }

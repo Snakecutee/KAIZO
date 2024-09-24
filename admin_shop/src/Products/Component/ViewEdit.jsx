@@ -51,7 +51,7 @@ const ViewEdit = () => {
             }
         }
     }
-
+    
     const onSelectImage = (e) => {
         if (e.target.files[0]) {
             setProduct({...product, file: e.target.files[0]});
@@ -115,54 +115,7 @@ const ViewEdit = () => {
                                     />
                                 </div>
                             </div>
-                            {/* <div style={{ margin: '0 1.5rem 1.5rem' }}>
-                                <h5 className="card-title">Image 1</h5>
-                                <div className='d-flex justify-content-between'>
-                                    <input
-                                        onChange={(e) => setProduct({ ...product, ['img1']: e.target.value })}
-                                        value={product?.img1 || ''}
-                                        className="form-control w-50"
-                                        type="text"
-                                        placeholder="Enter Image 1 Product!"
-                                    />
-                                </div>
-                            </div>
-                            <div style={{ margin: '0 1.5rem 1.5rem' }}>
-                                <h5 className="card-title">Image 2</h5>
-                                <div className='d-flex justify-content-between'>
-                                    <input
-                                        onChange={(e) => setProduct({ ...product, ['img2']: e.target.value })}
-                                        value={product?.img2 || ''}
-                                        className="form-control w-50"
-                                        type="text"
-                                        placeholder="Enter Image 2 Product!"
-                                    />
-                                </div>
-                            </div>
-                            <div style={{ margin: '0 1.5rem 1.5rem' }}>
-                                <h5 className="card-title">Image 3</h5>
-                                <div className='d-flex justify-content-between'>
-                                    <input
-                                        onChange={(e) => setProduct({ ...product, ['img3']: e.target.value })}
-                                        value={product?.img3 || ''}
-                                        className="form-control w-50"
-                                        type="text"
-                                        placeholder="Enter Image 3 Product!"
-                                    />
-                                </div>
-                            </div>
-                            <div style={{ margin: '0 1.5rem 1.5rem' }}>
-                                <h5 className="card-title">Image 4</h5>
-                                <div className='d-flex justify-content-between'>
-                                    <input
-                                        onChange={(e) => setProduct({ ...product, ['img4']: e.target.value })}
-                                        value={product?.img4 || ''}
-                                        className="form-control w-50"
-                                        type="text"
-                                        placeholder="Enter Image 4 Product!"
-                                    />
-                                </div>
-                            </div> */}
+                            
 
                             <div style={{ margin: '0 1.5rem 1.5rem' }}>
                                 <input 
@@ -181,7 +134,7 @@ const ViewEdit = () => {
                                         <option value="">Choose Category</option>
                                         {
                                             categoires?.length && categoires.map(item => 
-                                                <option value={item._id}>{item?.category}</option>
+                                                <option value={item.category}>{item?.category}</option>
                                             )
                                         }
                                     </select>

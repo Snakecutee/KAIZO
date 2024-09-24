@@ -121,18 +121,7 @@ function Chat(props) {
     }, [load])    
 
 
-    // //Hàm này dùng để nhận socket từ server gửi lên
-    // useEffect(() => {
 
-    //     //Nhận dữ liệu từ server gửi lên thông qua socket với key receive_message
-    //     socket.on('receive_message', (data) => {
-            
-    //         //Sau đó nó sẽ setLoad gọi lại hàm useEffect lấy lại dữ liệu
-    //         setLoad(true)
-  
-    //     })
-
-    // }, [])
 
 
     // Hàm này dùng để gửi tin nhắn cho khách hàng
@@ -144,9 +133,8 @@ function Chat(props) {
             return
         }
 
-        //Khi gửi tin nhắn thì nó sẽ lấy id của cả 2 người
-        //Với cái key category có value là send
-        //Vì là gửi tin nhắn
+    
+        
         const data = {
             id_user1: id_admin,
             id_user2: id_user2,
@@ -165,8 +153,7 @@ function Chat(props) {
             category: "receive"
         };
 
-        //Sau đó nó emit dữ liệu lên server bằng socket với key send_message và value data
-        // socket.emit('send_message', data)
+     
 
         //Tiếp theo nó sẽ postdata lên api đưa dữ liệu vào database
         const postData = async () => {
@@ -234,7 +221,7 @@ function Chat(props) {
                                                                     <h6 className="message-title mb-0 mt-1">{value.fullname}</h6>
                                                                     <span
                                                                         className="font-12 text-nowrap d-block text-muted text-truncate">Online</span>
-                                                                    <span className="font-12 text-nowrap d-block text-muted">9:08AM</span>
+                                                                    <span className="font-12 text-nowrap d-block text-muted"></span>
                                                                 </div>
                                                             </a>)
                                                         ))
@@ -309,7 +296,7 @@ function Chat(props) {
             </div>
             <footer className="footer text-center">
                  Designed and Developed by <a
-                    href="hhttps://www.facebook.com/vandaicute1/">Tien Kim</a>.
+                    href="hhttps://www.facebook.com/vandaicute1/">Van Dai</a>.
             </footer>
         </div>
     );

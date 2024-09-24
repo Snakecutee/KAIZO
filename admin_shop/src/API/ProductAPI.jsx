@@ -51,6 +51,10 @@ const ProductAPI = {
         const url = `/products/update/${id}`;
         return axiosClient.put(url, data);
     },
+    deleteProduct: (id, data) => {
+        const url = `/products/${id}`;
+        return axiosClient.delete(url, data);
+    },
 } 
 
 export default ProductAPI

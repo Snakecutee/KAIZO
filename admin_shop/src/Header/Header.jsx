@@ -35,10 +35,10 @@ function Header(props) {
                                 <i data-feather="settings" className="svg-icon"></i>
                             </a>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a className="dropdown-item" href="#">Action</a>
-                                <a className="dropdown-item" href="#">Another action</a>
+                                <a className="dropdown-item" href="">Table</a>
+                                {/* <a className="dropdown-item" href="#">Another action</a>
                                 <div className="dropdown-divider"></div>
-                                <a className="dropdown-item" href="#">Something else here</a>
+                                <a className="dropdown-item" href="#">Something else here</a> */}
                             </div>
                         </li>
                     </ul>

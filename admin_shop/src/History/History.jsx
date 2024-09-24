@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import HistoryAPI from '../API/HistoryAPI';
 
+
 // import io from "socket.io-client";
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // const socket = io("http://localhost:8000");
 
 function History(props) {
@@ -11,6 +13,7 @@ function History(props) {
     const [load, setLoad] = useState(false)
 
     const [text, setText] = useState('')
+    const navigate = useHistory();
 
     useEffect(() => {
 
@@ -25,9 +28,12 @@ function History(props) {
 
         fetchData()
 
-    }, [])
+    }, []);
 
-  
+    // const handleViewClick = (historyId) => {
+    //     navigate.push(`/history/${historyId}`); 
+       
+    //   };
 
 
     return (
@@ -82,7 +88,13 @@ function History(props) {
                                                         <td>{value.delivery ? 'Đã Vận Chuyển' : 'Chưa Vận Chuyển'}</td>
                                                         <td>{value.status ? 'Đã Thanh Toán' : 'Chưa Thanh Toán'}</td>
                                                         <td>
-                                                            <a style={{ cursor: 'pointer', color: 'white' }} className="btn btn-success">View</a>
+                                                        {/* <a
+                      style={{ cursor: 'pointer', color: 'white' }}
+                      className="btn btn-success"
+                      onClick={() => handleViewClick(value._id)}
+                    >
+                      View
+                    </a> */}
                                                         </td>
                                                     </tr>
                                                 ))

@@ -1,9 +1,9 @@
 
 const nodeMailer = require('nodemailer')
 
-const adminEmail = 'tienkim9920@gmail.com' // Email
+const adminEmail = 'vandai00112@gmail.com' // Email
 
-const adminPassword = 'Tktk0909@' // Password
+const adminPassword = 'vandai1@' // Password
 
 //  host của google - gmail
 const mailHost = 'smtp.gmail.com'
@@ -16,7 +16,7 @@ const sendMail = (to, subject, htmlContent) => {
     const transporter = nodeMailer.createTransport({
         host: mailHost,
         port: mailPort,
-        secure: false, // nếu các bạn dùng port 465 (smtps) thì để true, còn lại hãy để false cho tất cả các port khác
+        secure: false, // nếu các bạn dùng port 465 (smtps) thì để true
         auth: {
             user: adminEmail,
             pass: adminPassword
@@ -24,13 +24,13 @@ const sendMail = (to, subject, htmlContent) => {
     })
 
     const options = {
-        from: adminEmail, // địa chỉ admin email bạn dùng để gửi
+        from: adminEmail, // địa chỉ admin emaildùng để gửi
         to: to, // địa chỉ gửi đến
         subject: subject, // Tiêu đề của mail
-        html: htmlContent // Phần nội dung mail mình sẽ dùng html thay vì thuần văn bản thông thường.
+        html: htmlContent 
     }
     
-    // hàm transporter.sendMail() này sẽ trả về cho chúng ta một Promise
+    // hàm transporter.sendMail() này sẽ trả về một Promise
     return transporter.sendMail(options)
     
 }

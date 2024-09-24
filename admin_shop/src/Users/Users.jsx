@@ -18,7 +18,24 @@ function Users(props) {
 
         fetchData()
 
-    }, [])
+    }, []);
+    const handleUpdateUser = async (userId) => {
+        console.log('Update user with ID:', userId); // For now, log the ID
+      };
+    
+      const handleDeleteUser = async (userId) => {
+        if (window.confirm('Are you sure you want to delete this user?')) {
+          try {
+            await UserAPI.deleteUser(userId); // Assuming UserAPI has a deleteUser method
+            const updatedUsers = users.filter((user) => user._id !== userId);
+            setUsers(updatedUsers);
+          } catch (error) {
+            console.error('Error deleting user:', error);   
+    
+            // Optionally display an error message to the user
+          }
+        }
+      };
 
     return (
         <div className="page-wrapper">
@@ -55,24 +72,30 @@ function Users(props) {
                                                 <th>Phone</th>
                                                 <th>Edit</th>
                                             </tr>
-                                        </thead>
+                                        </thead>                                 
                                         <tbody>
-                                            {
-                                                users && users.map(value => (
-                                                    <tr key={value._id}>
-                                                        <td>{value._id}</td>
-                                                        <td>{value.fullname}</td>
-                                                        <td>{value.email}</td>
-                                                        <td>{value.phone}</td>
-                                                        <td>
-                                                            <a style={{cursor: 'pointer', color: 'white'}} className="btn btn-success">Update</a>
-                                                            &nbsp;
-                                                            <a style={{cursor: 'pointer', color: 'white'}} className="btn btn-danger">Delete</a>
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            }
-                                        </tbody>
+                                    {users &&  users.map((user) => (
+                                          <tr key={user._id}>
+                                                <td>{user._id}</td>
+                                                  <td>{user.fullname}</td>
+                                                  <td>{user.email}</td>
+                                                <td>{user.phone}</td>
+                                               <td>
+                                              <a
+                                               style={{ cursor: 'pointer', color: 'white' }}
+                                               className="btn btn-success"
+                                               onClick={() => handleUpdateUser(user._id)}
+                                               >  Update </a>
+                                           <a
+                                                  style={{ cursor: 'pointer', color: 'white' }}
+                                                  className="btn btn-danger"
+                                                  onClick={() => handleDeleteUser(user._id)}
+                                          >     Delete
+                                                  </a>
+                                          </td>
+                     </tr>
+                  ))}
+          </tbody>
                                     </table>
                                 </div>
                             </div>
