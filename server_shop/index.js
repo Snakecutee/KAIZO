@@ -16,6 +16,7 @@ var upload = require('express-fileupload');
 app.use('/', express.static('public'))
 app.use(upload());
 
+
 // const Messenger = require('./Model/messenger.model');
 
 // API
@@ -28,7 +29,7 @@ const messengerAPI = require('./API/Router/messenger.router')
 const commentAPI = require('./API/Router/comment.router')
 
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/KaiZo", {
+mongoose.connect("mongodb://localhost:27017/Boutique", {
   useFindAndModify: false,
   useCreateIndex: false,
   useNewUrlParser: true,

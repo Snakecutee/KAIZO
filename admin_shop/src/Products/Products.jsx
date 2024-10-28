@@ -122,7 +122,7 @@ function Products(props) {
                                                 <th>Image</th>
                                                 <th>Description</th>
                                                 <th>Category</th>
-                                                <th>Edit</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -143,11 +143,12 @@ function Products(props) {
                                                         <td>{value.category}</td>
                                                         <td>
                                                             <a href={`/products/view-edit?id=${value._id}`} style={{ cursor: 'pointer', color: 'white' }} className="btn btn-success">Update</a>
-                                                        </td>
-                                                       <a href="#" onClick={() => {
+                                                            <a href="#" onClick={() => {
                                                                    if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
                                                                    handleDeleteProduct(value._id); }
                                                               }} style={{ cursor: 'pointer', color: 'white' }} className="btn btn-danger">Delete</a>
+                                                        </td>
+                                                       
                                                     </tr>
                                                 ))
                                             }

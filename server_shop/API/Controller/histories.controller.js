@@ -27,3 +27,16 @@ module.exports.history = async (req, res) => {
     res.json(histories)
 
 }
+exports.updateStatus = async (req, res) => {
+    try {
+        const { status, delivery } = req.body;
+        const history = await Histories.findByIdAndUpdate(req.params.id, { status, delivery }, { new: true });
+        if (!history) {
+            return res.status(404).json({ message: 'History not found' });
+        }
+        res.json(history);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};

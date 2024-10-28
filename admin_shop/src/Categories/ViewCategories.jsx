@@ -60,7 +60,7 @@ const ViewCategories = () => {
                     <div className="col-12">
                         <div className="card" style={{ paddingTop: '1.5rem' }}>
                             <div style={{ margin: '0 1.5rem 1.5rem' }}>
-                                <h5 className="card-title">Name Product</h5>
+                                <h5 className="card-title">Name Category</h5>
                                 <div className='d-flex justify-content-between'>
                                     <input
                                         onChange={(e) => setCategory({ ...category, ['category']: e.target.value })}

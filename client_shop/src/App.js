@@ -15,6 +15,7 @@ import Checkout from './Checkout/Checkout';
 import History from './History/History';
 import Shop from './Shop/Shop';
 import Chat from './Share/Chat/Chat';
+import Profile from './Profile/Profile';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path='/checkout' component={Checkout} />
             <Route path='/history' component={History} />
             <Route path='/shop' component={Shop} />
+            <Route path="/profile" component={Profile} />
 
           </Switch>
         </BrowserRouter>

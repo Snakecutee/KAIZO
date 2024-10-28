@@ -186,7 +186,7 @@ function Shop(props) {
                             </ul>
                             {categories && categories.map((item) => (
                                 <ul className="list-unstyled small text-muted pl-lg-4 font-weight-normal">
-                                    <li className="mb-2"><a className="reset-anchor" href="#" onClick={() => handlerCategory(item?._id)}>{item?.category}</a></li>
+                                    <li className="mb-2"><a className="reset-anchor" href="#" onClick={() => handlerCategory(item.category)}>{item?.category}</a></li>
                                 </ul>
                             ))}
                         </div>

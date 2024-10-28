@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserAPI from '../API/UserAPI';
+import Profile from './../Profile/Profile';
 
 function Name(props) {
 
@@ -32,7 +33,7 @@ function Name(props) {
                 {name.fullname}
             </a>
             <div className="dropdown-menu mt-3" aria-labelledby="pagesDropdown">
-                <Link className="dropdown-item border-0 transition-link" to={'/manage'}>Manage</Link>
+                <Link className="dropdown-item border-0 transition-link" to={'/profile'}>Profile</Link>
                 <Link className="dropdown-item border-0 transition-link" to={'/history'}>History</Link>
             </div>
         </li>

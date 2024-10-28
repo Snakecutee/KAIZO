@@ -12,5 +12,7 @@ router.get('/all', Histories.history)
 
 //Get Detail History
 router.get('/:id', Histories.detail)
+// Update History Status
+router.put('/:id', Histories.updateStatus);
 
 module.exports = router

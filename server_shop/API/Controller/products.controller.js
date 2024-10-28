@@ -56,6 +56,7 @@ module.exports.updateCategory = async (req, res) => {
     }
 }
 
+
 // POST Product
 module.exports.createProduct = async (req, res) => {
     try {
@@ -76,7 +77,7 @@ module.exports.createProduct = async (req, res) => {
 
 // PUT Product
 module.exports.updateProduct = async (req, res) => {
-    // try {
+    try {
         const { id } = req.params;
         const { name, price, category, description } = req.body;
         var product = await Products.findOne({_id: id});
@@ -97,9 +98,9 @@ module.exports.updateProduct = async (req, res) => {
         product.description = description;
         product.save();
         res.json(product);
-    // } catch (error) {
-    //     return res.json('Server Error!');
-    // }
+    } catch (error) {
+        return res.json('Server Error!');
+    }
 }
 
 //Get Detail Product

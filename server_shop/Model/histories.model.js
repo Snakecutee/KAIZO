@@ -8,7 +8,7 @@ var schema = new mongoose.Schema(
         cart: Array,
         fullname: String,
         total: String,
-        status: Boolean,
+        status: { type: Boolean, default: false },
         delivery: Boolean
     }
 );

@@ -12,4 +12,6 @@ router.post('/signup', Users.signup)
 
 router.post('/login', Users.login);
 
+router.delete('/:userId', Users.deleteUser);
+
 module.exports = router

@@ -40,7 +40,7 @@ function Chat(props) {
     const onChangeText = (e) => {
 
         setTextMessage(e.target.value)
-
+        console.log(e.target.value)
     }
 
     // Hàm này là thay đổi state loadMessage phụ thuộc vào redux id_user
@@ -55,9 +55,7 @@ function Chat(props) {
 
 
     const handlerSend = () => {
-        //Khi gửi tin nhắn thì nó sẽ lấy id của cả 2 người
-        //Với cái key category có value là send
-        //Vì là gửi tin nhắn
+        
         const data = {
             id_user1: id_user,
             id_user2: id_admin,

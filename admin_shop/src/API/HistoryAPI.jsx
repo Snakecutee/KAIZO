@@ -15,7 +15,21 @@ const HistoryAPI = {
     getAll: () => {
         const url = '/histories/all'
         return axiosClient.get(url)
-    }
+    },
+    updateStatus: async (id, { status, delivery }) => {
+        const url = `/histories/${id}`;
+        return axiosClient.put(url, { status, delivery }); 
+    },
+    getHistory: async () => {
+        try {
+            const response = await axios.get('/api/history'); 
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching history data', error);
+            return [];
+        }
+    },
+   
 
 }
 

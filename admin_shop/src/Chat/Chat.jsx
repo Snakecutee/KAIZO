@@ -8,173 +8,91 @@ import './Chat.css'
 // const socket = io("http://localhost:8000");
 
 function Chat(props) {
-
-    const [another, setAnother] = useState([])
-
-    const id_admin = '5ff808424e24e9118cee77b2'
-
-    const [id_user2, set_id_user2] = useState('')
-
-    const [message, setMessage] = useState([])
-
-    const [load, setLoad] = useState(false)
-
-    const [textMessage, setTextMessage] = useState('')
-    const timeRef = useRef(null);
+    const [another, setAnother] = useState([]);
+    const id_admin = '5ff808424e24e9118cee77b2';
+    const [id_user2, set_id_user2] = useState('');
+    const [message, setMessage] = useState([]);
+    const [textMessage, setTextMessage] = useState('');
+    const pollingRef = useRef(null);
 
     const onChangeText = (e) => {
+        setTextMessage(e.target.value);
+    };
 
-        setTextMessage(e.target.value)
-
-    }
-
-    // Hàm này dùng để tìm ra những user khác với admin
+    // Fetch user data
     useEffect(() => {
-
-        sessionStorage.setItem('name_user', 'ADMIN')
-
+        sessionStorage.setItem('name_user', 'ADMIN');
         const fetchData = async () => {
+            const response = await UserAPI.getAllData();
+            const user_another = response.filter(value => value._id !== id_admin);
+            setAnother(user_another);
+        };
+        fetchData();
+    }, []);
 
-            const response = await UserAPI.getAllData()
-
-            const user_another = response.filter(value => {
-                return value._id !== id_admin
-            })
-
-            console.log(user_another)
-
-            setAnother(user_another)
-        }
-
-        fetchData()
-
-    }, [])
-
-
-    // Hàm này dùng để lấy id_user2
+    // Handle switching users
     const handler_id_user = (value) => {
+        set_id_user2(value);
+    };
 
-        set_id_user2(value)
-
-    }
-
-
-    // Hàm này dùng để load dữ liệu message và nó sẽ chạy lại khi state id_user2 thay đổi
-    // Tức là khi admin chọn người dùng mà admin muốn chat thì state id_user2 sẽ thay đổi
-    // để gọi lại hàm này
+    // Polling messages
     useEffect(() => {
+        // Clear previous polling if id_user2 changes
+        clearTimeout(pollingRef.current);
+
+        // Start polling if a user is selected
         if (id_user2) {
-            handlePollingMessage();
-        } else {
-            clearTimeout(timeRef.current);
-        }
-    }, [id_user2])
-
-    const fetchMessageData = async () => {
-        const params = {
-            id_user1: id_admin,
-            id_user2: id_user2
-        }
-        const query = '?' + queryString.stringify(params)
-        const response = await MessengerAPI.getMessage(query)
-        setMessage(response.content)
-        if (response) {
-            return true;
-        }
-    }
-
-    const handlePollingMessage = () => {
-        timeRef.current = setTimeout(async () => {
-            const flag = await fetchMessageData();
-            if (flag && id_user2) {
-                handlePollingMessage();
-            }
-        }, 3000);
-    }
-
-
-    // Đây là hàm lấy dữ liệu từ api dựa vào state load
-    // Dùng để load lại tin nhắn khi có socket từ server gửi tới
-    useEffect(() => {
-
-        if (load){
-            const fetchData = async () => {
-
+            const pollMessages = async () => {
                 const params = {
                     id_user1: id_admin,
                     id_user2: id_user2
+                };
+                const query = '?' + queryString.stringify(params);
+                const response = await MessengerAPI.getMessage(query);
+
+                // Update only if the new messages are different from the current messages
+                if (JSON.stringify(response.content) !== JSON.stringify(message)) {
+                    setMessage(response.content);
                 }
-    
-                const query = '?' + queryString.stringify(params)
-    
-                const response = await MessengerAPI.getMessage(query)
-    
-                setMessage(response.content)
-
-            }
-    
-            fetchData()
-
-            setLoad(false)
+                pollingRef.current = setTimeout(pollMessages, 3000);
+            };
+            pollMessages();
         }
 
-    }, [load])    
+        // Clear polling on component unmount or when id_user2 changes
+        return () => clearTimeout(pollingRef.current);
+    }, [id_user2, message]);
 
-
-
-
-
-    // Hàm này dùng để gửi tin nhắn cho khách hàng
+    // Send a message
     const handlerSend = () => {
+        if (!id_user2 || textMessage.trim() === '') return;
 
-        console.log(textMessage)
-
-        if (!id_user2){
-            return
-        }
-
-    
-        
         const data = {
             id_user1: id_admin,
             id_user2: id_user2,
             id: Math.random().toString(),
-            message: textMessage, 
+            message: textMessage,
             name: sessionStorage.getItem('name_user'),
             category: "send"
-        }
-
+        };
         const data_partner = {
+            ...data,
             id_user1: id_user2,
             id_user2: id_admin,
-            id: Math.random().toString(),
-            message: textMessage, 
             name: 'user',
             category: "receive"
         };
 
-     
-
-        //Tiếp theo nó sẽ postdata lên api đưa dữ liệu vào database
         const postData = async () => {
-
-            const query = '?' + queryString.stringify(data)
+            const query = '?' + queryString.stringify(data);
             const query_partner = '?' + queryString.stringify(data_partner);
-
-            const response = await MessengerAPI.postMessage(query)
-            const res = await MessengerAPI.postMessage(query_partner);
-
-            //Sau đó gọi hàm setLoad để useEffect lấy lại dữ liệu sau khi update
-            if (res) {
-                setLoad(true)
-            }
-        }
-
-        postData()        
-
-        setTextMessage('')
-
-    }
+            await MessengerAPI.postMessage(query);
+            await MessengerAPI.postMessage(query_partner);
+            setTextMessage('');
+            setMessage([...message, data]); // Update message list without fetching
+        };
+        postData();
+    };
 
     return (
         <div className="page-wrapper">
@@ -221,7 +139,7 @@ function Chat(props) {
                                                                     <h6 className="message-title mb-0 mt-1">{value.fullname}</h6>
                                                                     <span
                                                                         className="font-12 text-nowrap d-block text-muted text-truncate">Online</span>
-                                                                    <span className="font-12 text-nowrap d-block text-muted"></span>
+                                                                    <span className="font-12 text-nowrap d-block text-muted">9:08AM</span>
                                                                 </div>
                                                             </a>)
                                                         ))
@@ -295,8 +213,8 @@ function Chat(props) {
                 </div>
             </div>
             <footer className="footer text-center">
-                 Designed and Developed by <a
-                    href="hhttps://www.facebook.com/vandaicute1/">Van Dai</a>.
+                 <a
+                    href="https://www">Van Dai</a>.
             </footer>
         </div>
     );
