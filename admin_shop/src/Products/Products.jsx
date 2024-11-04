@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import queryString from 'query-string'
 import ProductAPI from '../API/ProductAPI';
 import Pagination from './Component/Pagination';
-import { Link } from 'react-router-dom';
-import Categories from './../Categories/Categories';
+// import { Link } from 'react-router-dom';
+// import Categories from './../Categories/Categories';
 
 
 
@@ -41,19 +41,22 @@ function Products(props) {
     }
     const handleDeleteProduct = async (productId) => {
         try {
-          const response = await ProductAPI.deleteProduct(productId);
-          if (response.status === 200) {
-            setProducts(products.filter(product => product._id !== productId));
-            alert('Xóa sản phẩm thành công!');
-          } else {
-            console.error('Failed to delete product:', response.error);
-            alert('Xóa sản phẩm thất bại. Vui lòng thử lại!');
-          }
+            console.log("Deleting product with ID:", productId); // Ghi log ID
+            const response = await ProductAPI.deleteProduct(productId);
+            
+            if (response.status === 200 || response.status === 204) {
+                setProducts(products.filter(product => product._id !== productId));
+                alert('Xóa sản phẩm thành công!');
+            } else {
+                console.error('Failed to delete product:', response.data);
+                alert('Xóa sản phẩm thất bại. Vui lòng thử lại!');
+            }
         } catch (error) {
-          console.error('Error deleting product:', error);
-          alert('Có lỗi xảy ra khi xóa sản phẩm!');
+            console.error('Error deleting product:', error.response ? error.response.data : error);
+            alert('Có lỗi xảy ra khi xóa sản phẩm!');
         }
-      };
+    };
+    
     useEffect(() => {
         const fetchAllData = async () => {
             // Nếu mà category === 'all' thì nó sẽ gọi hàm get tất cả sản phẩm

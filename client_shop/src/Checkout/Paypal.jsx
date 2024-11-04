@@ -25,8 +25,7 @@ const Paypal = ({ information, total, setLoad, setSuccess }) => {
                 const order = await actions.order.capture();
                 console.log(order)
 
-                // Tiếp theo là ông muốn xử lý api get,post,put,update như nào thì tùy ông xử lý nha :v
-                // Sau khi xử lý đưa xuống data xong thì
+             
 
                 setLoad(true);
                 const fetchOrderApi = async () => {

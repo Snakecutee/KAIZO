@@ -57,6 +57,26 @@ module.exports.updateCategory = async (req, res) => {
 }
 
 
+// DELETE Product
+module.exports.deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(`Deleting product with ID: ${id}`); // Ghi log ID
+        
+        const product = await Products.findByIdAndDelete(id);
+        
+        if (!product) {
+            console.log(`Product with ID: ${id} not found`); // Ghi log nếu không tìm thấy
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        
+        res.json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json('Server Error!');
+    }
+};
+
 // POST Product
 module.exports.createProduct = async (req, res) => {
     try {

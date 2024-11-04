@@ -51,9 +51,9 @@ const ProductAPI = {
         const url = `/products/update/${id}`;
         return axiosClient.put(url, data);
     },
-    deleteProduct: (id, data) => {
+    deleteProduct: (id) => {
         const url = `/products/${id}`;
-        return axiosClient.delete(url, data);
+        return axiosClient.delete(url);
     },
     deleteCategory: (id, data) => {
         const url = `/products/category/delete/${id}`;

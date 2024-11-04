@@ -24,7 +24,7 @@ router.put('/update/:id', Products.updateProduct);
 
 router.get('/pagination', Products.pagination)
 
-
+router.delete('/:id', Products.deleteProduct);
 
 router.get('/:id', Products.detail)
 
