@@ -34,6 +34,7 @@ module.exports.signup = async (req, res) => {
         email: email,
         password: password,
         phone: phone,
+        
     }
 
     Users.insertMany(data)
@@ -53,15 +54,28 @@ module.exports.login = async (req, res) => {
         res.json("false");
     }
 }
-module.exports.deleteUser = async (req, res) => {
-    const { userId } = req.params; // Lấy userId từ params
-    try {
-        const result = await Users.deleteOne({ _id: userId }); // Xóa người dùng
-        if (result.deletedCount === 0) {
-            return res.status(404).send({ message: 'User not found' }); // Trả về lỗi nếu không tìm thấy người dùng
-        }
-        res.status(200).send({ message: 'User deleted successfully' });
-    } catch (error) {
-        res.status(500).send({ message: 'Failed to delete user', error });
+module.exports.updateUserStatus = async (req, res) => {
+    const { userId } = req.params;  // Get userId from URL parameter
+    const { isActive } = req.body;  // Get the status from request body
+  
+    if (typeof isActive !== 'boolean') {
+      return res.status(400).json({ message: "isActive must be a boolean value" });
     }
-};
+  
+    try {
+      const updatedUser = await Users.findByIdAndUpdate(
+        userId,
+        { isActive },
+        { new: true }  // Return the updated user
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.status(200).json(updatedUser); // Return the updated user data
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };

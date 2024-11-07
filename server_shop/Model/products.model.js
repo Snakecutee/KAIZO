@@ -7,6 +7,7 @@ var schema = new mongoose.Schema(
         img1: String,
         category: String,
         description: String,
+        stock: String,
     }
 );
 

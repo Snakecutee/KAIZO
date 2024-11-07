@@ -5,7 +5,8 @@ var schema = new mongoose.Schema(
         fullname: String,
         email: String,
         password: String,
-        phone: String
+        phone: String,
+        isActive: { type: Boolean, default: false },
     }
 );
 

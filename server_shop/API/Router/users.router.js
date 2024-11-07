@@ -12,6 +12,7 @@ router.post('/signup', Users.signup)
 
 router.post('/login', Users.login);
 
-router.delete('/:userId', Users.deleteUser);
+router.put('/:userId/status', Users.updateUserStatus);
+
 
 module.exports = router
