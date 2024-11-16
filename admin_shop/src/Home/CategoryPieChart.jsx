@@ -8,42 +8,43 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6699"];
 
 const CategoryPieChart = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true); // Trạng thái loading
 
   useEffect(() => {
     async function fetchProductData() {
       try {
-        const response = await ProductAPI.getAPI(); // Gọi API để lấy tất cả sản phẩm
-        console.log(response); // Kiểm tra toàn bộ phản hồi
+        const response = await ProductAPI.getAPI();
+        console.log("Phản hồi từ API:", response);
 
-        // Kiểm tra xem response.data có phải là một mảng không
-        if (!response || !Array.isArray(response.data)) {
-          throw new Error("Dữ liệu sản phẩm không hợp lệ");
+        // Kiểm tra nếu response là mảng
+        if (!Array.isArray(response)) {
+          console.error("Phản hồi API không hợp lệ:", response);
+          throw new Error(
+            "Dữ liệu sản phẩm không hợp lệ hoặc không phải là mảng"
+          );
         }
 
         const categoryCount = {};
 
-        // Tính số lượng sản phẩm theo category
-        response.data.forEach((product) => {
-          const category = product.category; // Truy cập thuộc tính category trong sản phẩm
+        // Duyệt qua từng sản phẩm trong mảng
+        response.forEach((product) => {
+          const category = product.category;
           if (category) {
-            // Kiểm tra sự tồn tại của category
-            if (categoryCount[category]) {
-              categoryCount[category] += 1;
-            } else {
-              categoryCount[category] = 1;
-            }
+            categoryCount[category] = (categoryCount[category] || 0) + 1;
           }
         });
 
-        // Chuyển đổi categoryCount thành mảng dữ liệu cho biểu đồ
+        // Chuyển đổi thành dữ liệu cho biểu đồ
         const chartData = Object.keys(categoryCount).map((key) => ({
           name: key,
           value: categoryCount[key],
         }));
 
-        setData(chartData);
+        setData(chartData); // Cập nhật dữ liệu
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
+      } finally {
+        setLoading(false); // Cập nhật trạng thái khi hoàn thành tải dữ liệu
       }
     }
 
@@ -53,7 +54,9 @@ const CategoryPieChart = () => {
   return (
     <div>
       <h3>Số sản phẩm theo từng danh mục</h3>
-      {data.length > 0 ? ( // Kiểm tra xem dữ liệu có tồn tại
+      {loading ? (
+        <p>Đang tải dữ liệu...</p> // Hiển thị nếu dữ liệu đang tải
+      ) : data.length > 0 ? (
         <PieChart width={400} height={400}>
           <Pie
             data={data}
@@ -76,7 +79,7 @@ const CategoryPieChart = () => {
           <Legend />
         </PieChart>
       ) : (
-        <p>Đang tải dữ liệu...</p> // Thông báo đang tải dữ liệu
+        <p>Không có dữ liệu để hiển thị</p> // Hiển thị nếu không có dữ liệu
       )}
     </div>
   );

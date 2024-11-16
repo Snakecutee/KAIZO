@@ -55,8 +55,8 @@ module.exports.login = async (req, res) => {
     }
 }
 module.exports.updateUserStatus = async (req, res) => {
-    const { userId } = req.params;  // Get userId from URL parameter
-    const { isActive } = req.body;  // Get the status from request body
+    const { userId } = req.params;  
+    const { isActive } = req.body;  
   
     if (typeof isActive !== 'boolean') {
       return res.status(400).json({ message: "isActive must be a boolean value" });
@@ -66,16 +66,53 @@ module.exports.updateUserStatus = async (req, res) => {
       const updatedUser = await Users.findByIdAndUpdate(
         userId,
         { isActive },
-        { new: true }  // Return the updated user
+        { new: true }  
       );
   
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
   
-      res.status(200).json(updatedUser); // Return the updated user data
+      res.status(200).json(updatedUser); 
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
     }
   };
+  module.exports.updateUserData = async (req, res) => {
+    const { userId } = req.params;
+    const { fullname, email, phone } = req.body;
+
+    try {
+        const updatedUser = await Users.findByIdAndUpdate(userId, { fullname, email, phone }, { new: true });
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error("Error updating user data:", error);
+        res.status(500).json({ message: 'Error updating user data', error });
+    }
+};
+module.exports.changePassword = async (req, res) => {
+  const { userId } = req.params;  
+    const { password } = req.body;  
+  
+    
+    try {
+      const changePassword = await Users.findByIdAndUpdate(
+        userId,
+        { password },
+        { new: true }  
+      );
+  
+      if (!changePassword) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.status(200).json(changePassword); 
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+};

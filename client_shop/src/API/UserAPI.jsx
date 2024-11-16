@@ -1,27 +1,35 @@
-import axiosClient from './axiosClient'
+/** @format */
 
+import axiosClient from "./axiosClient";
 const UserAPI = {
+  getAllData: () => {
+    const url = "/users";
+    return axiosClient.get(url);
+  },
 
-    getAllData: () => {
-        const url = '/users'
-        return axiosClient.get(url)
-    },
+  getDetailData: (id) => {
+    const url = `/users/${id}`;
+    return axiosClient.get(url);
+  },
 
-    getDetailData: (id) => {
-        const url = `/users/${id}`
-        return axiosClient.get(url)
-    },
+  postSignUp: (body) => {
+    const url = "/users/signup";
+    return axiosClient.post(url, body);
+  },
 
-    postSignUp: (query) => {
-        const url = `/users/signup/${query}`
-        return axiosClient.post(url)
-    },
+  postLogin: (body) => {
+    const url = `/users/login`;
+    return axiosClient.post(url, body);
+  },
+  updateUserData: (userId, userData) => {
+    const url = `/users/${userId}/update`;
+    return axiosClient.put(url, userData);
+  },
 
-    postLogin: (body) => {
-        const url = `/users/login`;
-        return axiosClient.post(url, body);
-    }
+  changePassword: (userId, userData) => {
+    const url = `/users/${userId}/change-password`;
+    return axiosClient.put(url, userData);
+  },
+};
 
-}
-
-export default UserAPI
+export default UserAPI;

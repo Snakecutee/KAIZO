@@ -60,30 +60,19 @@ module.exports.updateCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
     try {
       const categoryId = req.params.id;
-  
-      // Check if categoryId is valid
       if (!categoryId) {
         return res.status(400).json({ message: 'Category ID is required' });
       }
-  
-      // Step 1: Check if there are products associated with this category
       const products = await Products.find({ categoryId: categoryId });
-  
       if (products.length > 0) {
         return res.status(400).json({ message: 'Cannot delete category with associated products' });
       }
-  
-      // Step 2: If no products are associated, proceed to delete the category
       const category = await Categories.findByIdAndDelete(categoryId);
-  
       if (!category) {
         return res.status(404).json({ message: 'Category not found' });
       }
-  
-      // Step 3: Respond back with success message
       res.status(200).json({ message: 'Category deleted successfully' });
     } catch (err) {
-      console.error(err); // Log the error to the console
       res.status(500).json({ message: 'Error deleting category', error: err.message });
     }
   };
